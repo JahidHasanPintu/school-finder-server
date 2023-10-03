@@ -1,7 +1,6 @@
-// db.js
-const mongoose = require('mongoose');
 
-const uri = "mongodb+srv://adminEduMatch:u4kXzZIbwdVkyMRz@cluster0.347dlsd.mongodb.net/service_provider-v1"; // Your MongoDB Atlas URI
+const mongoose = require('mongoose');
+const uri = "mongodb+srv://ashikulakash4537:DrMPMLRH81zGT5lj@cluster0.rxlpake.mongodb.net/school_finder"; 
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
