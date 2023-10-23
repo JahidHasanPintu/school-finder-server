@@ -8,9 +8,9 @@ const User = require('../models/user');
 // Register a new user
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, phone, address } = req.body;
+    const { name, email, password, phone, address,role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email,name, password: hashedPassword , phone, address});
+    const user = new User({ email,name, password: hashedPassword , phone, address, role});
     await user.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
