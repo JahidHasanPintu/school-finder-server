@@ -14,16 +14,47 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// Get all books
 router.get('/', async (req, res) => {
   try {
-    const books = await Book.find();
-    res.json(books);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const { page = 1, limit = 10, search, filterCategory } = req.query;
+    const skip = (page - 1) * limit;
+
+    const query = {};
+
+    if (search) {
+      const orConditions = [
+        { name: { $regex: new RegExp(search, 'i') } },
+        { authorName: { $regex: new RegExp(search, 'i') } },
+        { category: { $regex: new RegExp(search, 'i') } },
+        { description: { $regex: new RegExp(search, 'i') } },
+      ];
+    
+      query.$or = orConditions;
+    }
+
+    if (filterCategory) {
+      query.category = filterCategory;
+    }
+
+    const [books, totalBooks] = await Promise.all([
+      Book.find(query)
+        .skip(skip)
+        .limit(limit),
+      Book.countDocuments(query)
+    ]);
+
+    res.json({
+      currentPage: page,
+      totalPages: Math.ceil(totalBooks / limit),
+      totalBooks,
+      booksOnCurrentPage: books.length,
+      books,
+    });
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 // Get a specific book
 router.get('/:id', getBook, (req, res) => {
   res.json(res.book);
