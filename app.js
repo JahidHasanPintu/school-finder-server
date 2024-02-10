@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth');
 const schoolsRoutes = require('./routes/schools');
 const booksRoutes = require('./routes/books');
 const blogRoutes = require('./routes/blogs');
+const recommendationRoutes = require('./routes/recommendation');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use('/auth', authRoutes);
 app.use('/schools', schoolsRoutes);
 app.use('/books', booksRoutes);
 app.use('/blogs', blogRoutes);
+app.use('/recommendation', recommendationRoutes);
 
 app.get("/",(req,res)=>{
   res.send("Hi, Welcome to service provider  ");
